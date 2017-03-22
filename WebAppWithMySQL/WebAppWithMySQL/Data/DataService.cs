@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using MySql.Data.MySqlClient;
 using WebAppWithMySQL.Models;
 
@@ -7,11 +8,7 @@ namespace WebAppWithMySQL.Data
 {
     public class DataService
     {
-        private MySqlConnection connection;
-        private string server;
-        private string database;
-        private string uid;
-        private string password;
+        private MySqlConnection _connection;
 
         //Constructor
         public DataService()
@@ -22,11 +19,8 @@ namespace WebAppWithMySQL.Data
         //Initialize values
         private void Initialize()
         {
-            uid = "iqan";
-            password = "iqan";
-            var connectionString = "SERVER=localhost;" + "DATABASE=sakila;" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
-
-            connection = new MySqlConnection(connectionString);
+            var connectionString = ConfigurationManager.ConnectionStrings["mysqldb"].ConnectionString + "password=iqan;";
+            _connection = new MySqlConnection(connectionString);
         }
 
         //open connection to database
@@ -37,8 +31,8 @@ namespace WebAppWithMySQL.Data
             var query = "select * from city";
             try
             {
-                connection.Open();
-                var cmd = new MySqlCommand(query, connection);
+                _connection.Open();
+                var cmd = new MySqlCommand(query, _connection);
                 var dataReader = cmd.ExecuteReader();
                 while (dataReader.Read())
                 {
@@ -67,7 +61,7 @@ namespace WebAppWithMySQL.Data
             }
             finally
             {
-                connection.Close();
+                _connection.Close();
             }
             return cities;
         }
