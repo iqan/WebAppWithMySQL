@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WebAppWithMySQL.Models.City>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>List of cities</h2>
+
+@if (ViewBag.Error != null)
+{
+    <p>@ViewBag.Error</p>        
+}
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.city_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.city)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.country_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.last_update)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.city_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.city)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.country_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.last_update)
+        </td>
+    </tr>
+}
+
+</table>
