@@ -8,22 +8,14 @@ namespace WebAppWithMySQL.Data
 {
     public class DataService
     {
-        private MySqlConnection _connection;
+        private readonly MySqlConnection _connection;
 
-        //Constructor
         public DataService()
-        {
-            Initialize();
-        }
-
-        //Initialize values
-        private void Initialize()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["mysqldb"].ConnectionString + "password=iqan;";
             _connection = new MySqlConnection(connectionString);
         }
 
-        //open connection to database
         public List<City> GetCityList(out string error)
         {
             error = string.Empty;
@@ -57,7 +49,14 @@ namespace WebAppWithMySQL.Data
                     case 1045:
                         error = "Invalid username/password, please try again";
                         break;
+                    default:
+                        error = "An error occurred. Error: " + ex.Message;
+                        break;
                 }
+            }
+            catch (Exception e)
+            {
+                error = "An error occurred. Error: " + e.Message;
             }
             finally
             {
