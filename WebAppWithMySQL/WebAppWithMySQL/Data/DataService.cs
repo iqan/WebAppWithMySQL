@@ -64,5 +64,33 @@ namespace WebAppWithMySQL.Data
             }
             return cities;
         }
+
+        public bool AddNewCity(City city,out string error)
+        {
+            error = string.Empty;
+            var inserted = false;
+            
+            try
+            {
+                _connection.Open();
+                var query = "insert into city (city, country_id, last_update) values("
+                        + "'" + city.city + "'"
+                        + "," + city.country_id
+                        + ",NOW()"
+                        + ")";
+                var cmd = new MySqlCommand(query, _connection);
+                cmd.ExecuteNonQuery();
+                inserted = true;
+            }
+            catch (Exception e)
+            {
+                error = "An error occurred. Error: " + e.Message;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return inserted;
+        }
     }
 }
